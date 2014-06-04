@@ -4,7 +4,8 @@
 #define TRUE 1
 #define FALSE 0
 
-typedef struct {
+typedef struct
+{
 	int dest;
 	void (*func)(char);
 	char *loc;
@@ -56,8 +57,10 @@ int printk(PRINTK_INFO *, const char *, va_list);
 #define IS_FMT_n(a)     (a & FMT_n)
 
 /********************************************************************/
-static void printk_putc(int c, int *count, PRINTK_INFO *info) {
-	switch (info->dest) {
+static void printk_putc(int c, int *count, PRINTK_INFO *info)
+{
+	switch (info->dest)
+	{
 	case DEST_CONSOLE:
 		info->func((char) c);
 		break;
@@ -72,7 +75,8 @@ static void printk_putc(int c, int *count, PRINTK_INFO *info) {
 }
 
 /********************************************************************/
-static int printk_mknumstr(char *numstr, void *nump, int neg, int radix) {
+static int printk_mknumstr(char *numstr, void *nump, int neg, int radix)
+{
 	int a, b, c;
 	unsigned int ua, ub, uc;
 
@@ -83,38 +87,51 @@ static int printk_mknumstr(char *numstr, void *nump, int neg, int radix) {
 	nstrp = numstr;
 	*nstrp++ = '\0';
 
-	if (neg) {
+	if (neg)
+	{
 		a = *(int *) nump;
-		if (a == 0) {
+		if (a == 0)
+		{
 			*nstrp = '0';
 			++nlen;
 			goto done;
 		}
-		while (a != 0) {
+		while (a != 0)
+		{
 			b = (int) a / (int) radix;
 			c = (int) a - ((int) b * (int) radix);
-			if (c < 0) {
+			if (c < 0)
+			{
 				c = ~c + 1 + '0';
-			} else {
+			}
+			else
+			{
 				c = c + '0';
 			}
 			a = b;
 			*nstrp++ = (char) c;
 			++nlen;
 		}
-	} else {
+	}
+	else
+	{
 		ua = *(unsigned int *) nump;
-		if (ua == 0) {
+		if (ua == 0)
+		{
 			*nstrp = '0';
 			++nlen;
 			goto done;
 		}
-		while (ua != 0) {
+		while (ua != 0)
+		{
 			ub = (unsigned int) ua / (unsigned int) radix;
 			uc = (unsigned int) ua - ((unsigned int) ub * (unsigned int) radix);
-			if (uc < 10) {
+			if (uc < 10)
+			{
 				uc = uc + '0';
-			} else {
+			}
+			else
+			{
 				uc = uc - 10 + 'A';
 			}
 			ua = ub;
@@ -127,26 +144,31 @@ static int printk_mknumstr(char *numstr, void *nump, int neg, int radix) {
 
 /********************************************************************/
 static void printk_pad_zero(int curlen, int field_width, int *count,
-		PRINTK_INFO *info) {
+		PRINTK_INFO *info)
+{
 	int i;
 
-	for (i = curlen; i < field_width; i++) {
+	for (i = curlen; i < field_width; i++)
+	{
 		printk_putc('0', count, info);
 	}
 }
 
 /********************************************************************/
 static void printk_pad_space(int curlen, int field_width, int *count,
-		PRINTK_INFO *info) {
+		PRINTK_INFO *info)
+{
 	int i;
 
-	for (i = curlen; i < field_width; i++) {
+	for (i = curlen; i < field_width; i++)
+	{
 		printk_putc(' ', count, info);
 	}
 }
 
 /********************************************************************/
-int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
+int printk(PRINTK_INFO *info, const char *fmt, va_list ap)
+{
 	/* va_list ap; */
 	char *p;
 	int c;
@@ -177,22 +199,27 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 	 * Start parsing apart the format string and display appropriate
 	 * formats and data.
 	 */
-	for (p = (char *) fmt; (c = *p) != 0; p++) {
+	for (p = (char *) fmt; (c = *p) != 0; p++)
+	{
 		/*
 		 * All formats begin with a '%' marker.  Special chars like
 		 * '\n' or '\t' are normally converted to the appropriate
 		 * character by the __compiler__.  Thus, no need for this
 		 * routine to account for the '\' character.
 		 */
-		if (c != '%') {
+		if (c != '%')
+		{
 			/*
 			 * This needs to be replaced with something like
 			 * 'out_char()' or call an OS routine.
 			 */
 #ifndef UNIX_DEBUG
-			if (c != '\n') {
+			if (c != '\n')
+			{
 				printk_putc(c, &count, info);
-			} else {
+			}
+			else
+			{
 				printk_putc(0x0D /* CR */, &count, info);
 				printk_putc(0x0A /* LF */, &count, info);
 			}
@@ -212,8 +239,10 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 		 */
 		flags_used = 0;
 		done = FALSE;
-		while (!done) {
-			switch (/* c = */*++p) {
+		while (!done)
+		{
+			switch (/* c = */*++p)
+			{
 			case '-':
 				flags_used |= FLAGS_MINUS;
 				break;
@@ -242,8 +271,10 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 		 */
 		field_width = 0;
 		done = FALSE;
-		while (!done) {
-			switch (c = *++p) {
+		while (!done)
+		{
+			switch (c = *++p)
+			{
 			case '0':
 			case '1':
 			case '2':
@@ -267,7 +298,8 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 		/*
 		 * Next check for the width and precision field separator.
 		 */
-		if (/* (c = *++p) */*++p == '.') {
+		if (/* (c = *++p) */*++p == '.')
+		{
 			/* precision_used = TRUE; */
 
 			/*
@@ -275,8 +307,10 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 			 */
 			/* precision_width = 0; */
 			done = FALSE;
-			while (!done) {
-				switch (/* c = uncomment if used below */*++p) {
+			while (!done)
+			{
+				switch (/* c = uncomment if used below */*++p)
+				{
 				case '0':
 				case '1':
 				case '2':
@@ -299,7 +333,9 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 					break;
 				}
 			}
-		} else {
+		}
+		else
+		{
 			/* we've gone one char too far */
 			--p;
 #if 0
@@ -312,7 +348,8 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 		 * Check for the length modifier.
 		 */
 		/* length_modifier = 0; */
-		switch (/* c = */*++p) {
+		switch (/* c = */*++p)
+		{
 		case 'h':
 			/* length_modifier |= LENMOD_h; */
 			break;
@@ -331,25 +368,35 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 		/*
 		 * Now we're ready to examine the format.
 		 */
-		switch (c = *++p) {
+		switch (c = *++p)
+		{
 		case 'd':
 		case 'i':
 			ival = (int) va_arg(ap, int);
 			vlen = printk_mknumstr(vstr, &ival, TRUE, 10);
 			vstrp = &vstr[vlen];
 
-			if (ival < 0) {
+			if (ival < 0)
+			{
 				schar = '-';
 				++vlen;
-			} else {
-				if (IS_FLAG_PLUS(flags_used)) {
+			}
+			else
+			{
+				if (IS_FLAG_PLUS(flags_used))
+				{
 					schar = '+';
 					++vlen;
-				} else {
-					if (IS_FLAG_SPACE(flags_used)) {
+				}
+				else
+				{
+					if (IS_FLAG_SPACE(flags_used))
+					{
 						schar = ' ';
 						++vlen;
-					} else {
+					}
+					else
+					{
 						schar = 0;
 					}
 				}
@@ -359,15 +406,19 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 			/*
 			 * do the ZERO pad.
 			 */
-			if (IS_FLAG_ZERO(flags_used)) {
+			if (IS_FLAG_ZERO(flags_used))
+			{
 				if (schar)
 					printk_putc(schar, &count, info);
 				dschar = TRUE;
 
 				printk_pad_zero(vlen, field_width, &count, info);
 				vlen = field_width;
-			} else {
-				if (!IS_FLAG_MINUS(flags_used)) {
+			}
+			else
+			{
+				if (!IS_FLAG_MINUS(flags_used))
+				{
 					printk_pad_space(vlen, field_width, &count, info);
 
 					if (schar)
@@ -378,7 +429,8 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 
 			/* the string was built in reverse order, now display in */
 			/* correct order */
-			if (!dschar && schar) {
+			if (!dschar && schar)
+			{
 				printk_putc(schar, &count, info);
 			}
 			goto cont_xd;
@@ -390,8 +442,10 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 			vstrp = &vstr[vlen];
 
 			dschar = FALSE;
-			if (IS_FLAG_ZERO(flags_used)) {
-				if (IS_FLAG_POUND(flags_used)) {
+			if (IS_FLAG_ZERO(flags_used))
+			{
+				if (IS_FLAG_POUND(flags_used))
+				{
 					printk_putc('0', &count, info);
 					printk_putc('x', &count, info);
 					/*vlen += 2;*/
@@ -399,13 +453,18 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 				}
 				printk_pad_zero(vlen, field_width, &count, info);
 				vlen = field_width;
-			} else {
-				if (!IS_FLAG_MINUS(flags_used)) {
-					if (IS_FLAG_POUND(flags_used)) {
+			}
+			else
+			{
+				if (!IS_FLAG_MINUS(flags_used))
+				{
+					if (IS_FLAG_POUND(flags_used))
+					{
 						vlen += 2;
 					}
 					printk_pad_space(vlen, field_width, &count, info);
-					if (IS_FLAG_POUND(flags_used)) {
+					if (IS_FLAG_POUND(flags_used))
+					{
 						printk_putc('0', &count, info);
 						printk_putc('x', &count, info);
 						dschar = TRUE;
@@ -413,7 +472,8 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 				}
 			}
 
-			if ((IS_FLAG_POUND(flags_used)) && !dschar) {
+			if ((IS_FLAG_POUND(flags_used)) && !dschar)
+			{
 				printk_putc('0', &count, info);
 				printk_putc('x', &count, info);
 				vlen += 2;
@@ -438,11 +498,15 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 
 			cont_u: vstrp = &vstr[vlen];
 
-			if (IS_FLAG_ZERO(flags_used)) {
+			if (IS_FLAG_ZERO(flags_used))
+			{
 				printk_pad_zero(vlen, field_width, &count, info);
 				vlen = field_width;
-			} else {
-				if (!IS_FLAG_MINUS(flags_used)) {
+			}
+			else
+			{
+				if (!IS_FLAG_MINUS(flags_used))
+				{
 					printk_pad_space(vlen, field_width, &count, info);
 				}
 			}
@@ -450,7 +514,8 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 			cont_xd: while (*vstrp)
 				printk_putc(*vstrp--, &count, info);
 
-			if (IS_FLAG_MINUS(flags_used)) {
+			if (IS_FLAG_MINUS(flags_used))
+			{
 				printk_pad_space(vlen, field_width, &count, info);
 			}
 			break;
@@ -461,14 +526,17 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 			break;
 		case 's':
 			sval = (char *) va_arg(ap, char *);
-			if (sval) {
+			if (sval)
+			{
 				vlen = strlen(sval);
-				if (!IS_FLAG_MINUS(flags_used)) {
+				if (!IS_FLAG_MINUS(flags_used))
+				{
 					printk_pad_space(vlen, field_width, &count, info);
 				}
 				while (*sval)
 					printk_putc(*sval++, &count, info);
-				if (IS_FLAG_MINUS(flags_used)) {
+				if (IS_FLAG_MINUS(flags_used))
+				{
 					printk_pad_space(vlen, field_width, &count, info);
 				}
 			}
@@ -486,7 +554,8 @@ int printk(PRINTK_INFO *info, const char *fmt, va_list ap) {
 }
 
 /********************************************************************/
-int io_printf(const char *fmt, ...) {
+int io_printf(const char *fmt, ...)
+{
 	va_list ap;
 	int rvalue;
 	PRINTK_INFO info;
@@ -506,7 +575,8 @@ int io_printf(const char *fmt, ...) {
 }
 
 /********************************************************************/
-int sprintf(char *s, const char *fmt, ...) {
+int sprintf(char *s, const char *fmt, ...)
+{
 	va_list ap;
 	int rvalue = 0;
 	PRINTK_INFO info;
@@ -514,7 +584,8 @@ int sprintf(char *s, const char *fmt, ...) {
 	/*
 	 * Initialize the pointer to the variable length argument list.
 	 */
-	if (s != 0) {
+	if (s != 0)
+	{
 		info.dest = DEST_STRING;
 		info.loc = s;
 		va_start(ap, fmt);

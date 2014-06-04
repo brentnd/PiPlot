@@ -3,7 +3,8 @@
 
 void uart0_init(int sysclk, int baud);
 
-void InitUARTs() {
+void InitUARTs()
+{
 	SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
 
 	PORTA_PCR1 = PORT_PCR_MUX(2) | PORT_PCR_DSE_MASK;
@@ -18,7 +19,8 @@ void InitUARTs() {
 	uart0_init(CORE_CLOCK / 2 / 1000, SDA_SERIAL_BAUD);
 }
 
-void uart0_init(int sysclk, int baud) {
+void uart0_init(int sysclk, int baud)
+{
 	uint8 i;
 	uint32 calculated_baud = 0;
 	uint32 baud_diff = 0;
@@ -34,7 +36,8 @@ void uart0_init(int sysclk, int baud) {
 	UART0_C2 &= ~(UART0_C2_TE_MASK | UART0_C2_RE_MASK);
 
 	// Verify that a valid clock value has been passed to the function 
-	if ((sysclk > 50000) || (sysclk < 32)) {
+	if ((sysclk > 50000) || (sysclk < 32))
+	{
 		sysclk = 0;
 		reg_temp = SIM_SOPT2;
 		reg_temp &= ~SIM_SOPT2_UART0SRC_MASK;
@@ -44,7 +47,8 @@ void uart0_init(int sysclk, int baud) {
 		// Enter inifinite loop because the 
 		// the desired system clock value is 
 		// invalid!!
-		while (1) {
+		while (1)
+		{
 		}
 	}
 
@@ -66,7 +70,8 @@ void uart0_init(int sysclk, int baud) {
 	osr_val = i;
 
 	// Select the best OSR value
-	for (i = 5; i <= 32; i++) {
+	for (i = 5; i <= 32; i++)
+	{
 		sbr_val = (uint32) (uart0clk / (baud_rate * i));
 		calculated_baud = (uart0clk / (i * sbr_val));
 
@@ -75,13 +80,15 @@ void uart0_init(int sysclk, int baud) {
 		else
 			temp = baud_rate - calculated_baud;
 
-		if (temp <= baud_diff) {
+		if (temp <= baud_diff)
+		{
 			baud_diff = temp;
 			osr_val = i;
 		}
 	}
 
-	if (baud_diff < ((baud_rate / 100) * 3)) {
+	if (baud_diff < ((baud_rate / 100) * 3))
+	{
 		// If the OSR is between 4x and 8x then both
 		// edge sampling MUST be turned on.  
 		if ((osr_val > 3) && (osr_val < 9))
@@ -106,7 +113,9 @@ void uart0_init(int sysclk, int baud) {
 
 		/* Enable receiver and transmitter */
 		UART0_C2 |= (UART0_C2_TE_MASK | UART0_C2_RE_MASK);
-	} else {
+	}
+	else
+	{
 		// Unacceptable baud rate difference
 		// More than 3% difference!!
 		// Enter infinite loop!
@@ -116,7 +125,8 @@ void uart0_init(int sysclk, int baud) {
 
 }
 
-char uart_getchar() {
+char uart_getchar()
+{
 	/* Wait until character has been received */
 	while (!(UART0_S1 & UART_S1_RDRF_MASK))
 		;
@@ -125,7 +135,8 @@ char uart_getchar() {
 	return UART0_D ;
 }
 
-void uart_putchar(char ch) {
+void uart_putchar(char ch)
+{
 	/* Wait until space is available in the FIFO */
 	while (!(UART0_S1 & UART_S1_TDRE_MASK))
 		;
@@ -134,6 +145,7 @@ void uart_putchar(char ch) {
 	UART0_D = (uint8) ch;
 }
 
-int uart_getchar_present() {
+int uart_getchar_present()
+{
 	return (UART0_S1 & UART_S1_RDRF_MASK);
 }
