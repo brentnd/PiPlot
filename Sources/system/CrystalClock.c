@@ -133,8 +133,6 @@ void InitClock()
  * Notes:
  * Assumes the MCG mode is in the default FEI mode out of reset
  */
-
-#include "derivative.h"
 #include "System.h"
 
 
