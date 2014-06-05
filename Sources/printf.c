@@ -561,7 +561,7 @@ int io_printf(const char *fmt, ...)
 	PRINTK_INFO info;
 
 	info.dest = DEST_CONSOLE;
-	info.func = &uart_putchar;
+	info.func = &UART_putchar;
 	/*
 	 * Initialize the pointer to the variable length argument list.
 	 */

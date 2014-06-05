@@ -8,7 +8,7 @@ void Initialize()
 	InitClock();
 	InitSysTick();
 	InitGPIO();
-	InitUARTs();
+	UART_init();
 }
 
 void InitGPIO()
@@ -20,10 +20,9 @@ void InitGPIO()
 
 	//Setup Pins as GPIO
 	PORTE_PCR21 = PORT_PCR_MUX(1) | PORT_PCR_DSE_MASK;
-	PORTE_PCR20 = PORT_PCR_MUX(1);
 
 	//Setup the output pins
-	//GPIOB_PDDR = PIN;
+	GPIOB_PDDR = PIN;
 	//GPIOE_PDDR = PIN;
 	//GPIOD_PDDR |= PIN;
 

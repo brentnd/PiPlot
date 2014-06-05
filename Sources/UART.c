@@ -1,9 +1,8 @@
 #include "Config.h"
-#include "UART.h"
 
 void uart0_init(int sysclk, int baud);
 
-void InitUARTs()
+void UART_init()
 {
 	SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
 
@@ -125,7 +124,7 @@ void uart0_init(int sysclk, int baud)
 
 }
 
-char uart_getchar()
+char UART_getchar()
 {
 	/* Wait until character has been received */
 	while (!(UART0_S1 & UART_S1_RDRF_MASK))
@@ -135,7 +134,7 @@ char uart_getchar()
 	return UART0_D ;
 }
 
-void uart_putchar(char ch)
+void UART_putchar(char ch)
 {
 	/* Wait until space is available in the FIFO */
 	while (!(UART0_S1 & UART_S1_TDRE_MASK))
@@ -145,7 +144,7 @@ void uart_putchar(char ch)
 	UART0_D = (uint8) ch;
 }
 
-int uart_getchar_present()
+int UART_getchar_present()
 {
 	return (UART0_S1 & UART_S1_RDRF_MASK);
 }
