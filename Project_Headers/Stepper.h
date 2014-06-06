@@ -20,8 +20,8 @@ typedef struct
   uint8_t enabled;
   uint8_t spinning;
   uint8_t speed;
-  int32_t desired_position;
-  int32_t current_position;
+  uint32_t desired_position;
+  uint32_t current_position;
 } StepperStatus;
 
 /* Stepper motor structure which has settings and status */
