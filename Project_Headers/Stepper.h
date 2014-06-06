@@ -35,8 +35,8 @@ typedef struct
 StepperMotor Motor[NUM_MOTORS];
 
 /* Pointers to the steppers */
-StepperMotor* p_Motor0 = &Motor[0];
-StepperMotor* p_Motor1 = &Motor[1];
+StepperMotor* p_Motor0;
+StepperMotor* p_Motor1;
 
 /* Public stepper functions */
 void StepperInit();

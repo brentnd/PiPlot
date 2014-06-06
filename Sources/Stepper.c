@@ -18,6 +18,10 @@ void StepperReset(StepperMotor* mot);
 void StepperInit()
 {
   int i;
+  
+  p_Motor0 = &Motor[0];
+  p_Motor1 = &Motor[1];
+  
   StepperSetSettings();
 
   // Enable Clocks to all ports
