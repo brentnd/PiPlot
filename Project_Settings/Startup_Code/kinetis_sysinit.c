@@ -5,7 +5,7 @@
  */
  
 #include "kinetis_sysinit.h"
-#include "config.h"
+#include "Config.h"
 
 /**
  **===========================================================================
@@ -127,7 +127,7 @@ void (* const InterruptVector[])() __attribute__ ((section(".vectortable"))) = {
     FTM2_IRQHandler, /* FTM2 fault, overflow and channels interrupt */
     RTC_Alarm_IRQHandler, /* RTC Alarm interrupt */
     RTC_Seconds_IRQHandler, /* RTC Seconds interrupt */
-    PIT_IRQHandler, /* PIT timer all channels interrupt */
+    PIT_IRQ, /* PIT timer all channels interrupt */
     Default_Handler, /* Reserved interrupt 39/23 */
     USBOTG_IRQHandler, /* USB interrupt */
     DAC0_IRQHandler, /* DAC0 interrupt */

@@ -25,6 +25,6 @@ void PIT_IRQ()
   PIT_TFLG0 = PIT_TFLG_TIF_MASK;
 
   // Update stepper motors
-  //StepperUpdate(p_Motor0);
-  //StepperUpdate(p_Motor1);
+  StepperUpdate(p_Motor0);
+  StepperUpdate(p_Motor1);
 }

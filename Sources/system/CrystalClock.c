@@ -96,7 +96,7 @@ char drs_val, dmx32_val;
  * It will configure the MCU to disable STOP and COP Modules.
  * It also set the MCG configuration and bus clock frequency.
  ****************************************************************************/
-void InitClock()
+void ClockInit()
 {
 	pll_init(8000000, LOW_POWER, CRYSTAL, 4, 24, MCGOUT);
     	

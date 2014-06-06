@@ -4,7 +4,7 @@
 static volatile unsigned int DelayTimerTick = 0;
 volatile uint32_t Ticker[NUM_TICKERS];
 
-void InitSysTick()
+void SysTickInit()
 {
 	uint8_t i;
 	

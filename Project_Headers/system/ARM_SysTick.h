@@ -2,7 +2,7 @@
 #define ARM_SYSTICK_H_
 
 
-void InitSysTick();
+void SysTickInit();
 void Delay_mS(unsigned int TicksIn_mS);
 void SysTickIrq();
 
