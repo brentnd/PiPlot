@@ -1,5 +1,15 @@
 #include "Config.h"
 
+/*
+ * Internal function prototypes
+ */
+void StepperActivateCoil(StepperMotor* mot, uint8 coil);
+void StepperReset(StepperMotor* mot);
+
+/*
+ * Function implementations
+ */
+
 /* 
  * Update the absolute position of the stepper motor
  *  @param none
@@ -43,7 +53,7 @@ void StepperSetPosition(StepperMotor* mot, int new_position)
  */
 void StepperSetPositionDelta(StepperMotor* mot, int delta)
 {
-  mot->status.desired_position = desired_position + delta;
+  mot->status.desired_position += delta;
 }
 
 /*
@@ -82,12 +92,12 @@ void StepperUpdate(StepperMotor* mot)
   {
     // State change CW
     if(mot->status.desired_position > mot->status.current_position)
-      current_position++;
+      mot->status.current_position++;
     // State changed CCW
     else if(mot->status.desired_position < mot->status.current_position)
-      current_position--;
+      mot->status.current_position--;
     
-    StepperActiveCoil(mot, current_position%4);
+    StepperActiveCoil(mot, mot->status.current_position%4);
   }
 }
 

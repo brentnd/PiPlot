@@ -5,4 +5,6 @@
 
 void PIT_init();
 
+void PIT_IRQ();
+
 #endif /* PIT_H_ */

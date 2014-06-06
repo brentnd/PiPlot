@@ -4,15 +4,15 @@
 #define SDA_SERIAL_BAUD		115200
 #define printf io_printf
 
-void InitUARTs();
+void UART_init();
 
 void UART_Process();
 
-char uart_getchar();
+char UART_getchar();
 
-void uart_putchar(char ch);
+void UART_putchar(char ch);
 
-int uart_getchar_present();
+int UART_getchar_present();
 
 int io_printf(const char *, ...);
 

@@ -11,19 +11,18 @@
 /* Settings structure for stepper */
 typedef struct
 {
-  FGPIO_MemMapPtr Port = PTE_BASE_PTR;
-  uint8 Pin[4] =  { (1<<0), (1<<0), (1<<0), (1<<0) };
-
+  GPIO_MemMapPtr Port;
+  uint8_t Pin[4];
 } StepperSettings;
 
 /* Status structure for stepper */
 typedef struct
 {
-  uint8 enabled = 0;
-  uint8 spinning = 0;
-  uint8 speed = 0;
-  int32 desired_position = 0;
-  int32 current_position = 0;
+  uint8_t enabled;
+  uint8_t spinning;
+  uint8_t speed;
+  int32_t desired_position;
+  int32_t current_position;
 } StepperStatus;
 
 /* Stepper motor structure which has settings and status */
@@ -44,6 +43,7 @@ StepperMotor* p_Motor1 = &Motor[1];
 void StepperInit();
 void StepperSetPosition(StepperMotor* mot, int new_position);
 void StepperSetPositionDelta(StepperMotor* mot, int delta);
-int32 StepperGetPosition(StepperMotor* mot);
+int StepperGetPosition(StepperMotor* mot);
+void StepperUpdate(StepperMotor* mot);
 
 #endif /* STEPPER_H_ */
