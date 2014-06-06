@@ -5,10 +5,8 @@
 #include "System.h"
 #include "UART.h"
 #include "Stepper.h"
+#include "PIT.h"
 
 void Initialize();
-
-// Initialize the GPIO pins
-void InitGPIO();
 
 #endif /* CONFIG_H_ */

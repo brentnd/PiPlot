@@ -3,16 +3,15 @@
 
 #include "Config.h"
 
-#define PT1  (1<<1)
-#define PT2  (1<<2)
-#define PT3  (1<<3)
-#define PT4  (1<<4)
+#define NUM_PINS    4
+#define NUM_MOTORS  2
 
 /* Settings structure for stepper */
 typedef struct
 {
-  GPIO_MemMapPtr Port;
-  uint8_t Pin[4];
+  GPIO_MemMapPtr Pt;
+  PORT_MemMapPtr Port;
+  uint8_t Pin[NUM_PINS];
 } StepperSettings;
 
 /* Status structure for stepper */
@@ -33,7 +32,7 @@ typedef struct
 } StepperMotor;
 
 /* Stepper motor objects */
-StepperMotor Motor[2];
+StepperMotor Motor[NUM_MOTORS];
 
 /* Pointers to the steppers */
 StepperMotor* p_Motor0 = &Motor[0];

@@ -3,6 +3,7 @@
 /*
  * Internal function prototypes
  */
+void StepperSetSettings();
 void StepperActivateCoil(StepperMotor* mot, uint8 coil);
 void StepperReset(StepperMotor* mot);
 
@@ -16,19 +17,48 @@ void StepperReset(StepperMotor* mot);
  */
 void StepperInit()
 {
+  int i;
+  StepperSetSettings();
+
+  // Enable Clocks to all ports
+  SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK | SIM_SCGC5_PORTB_MASK
+      | SIM_SCGC5_PORTC_MASK | SIM_SCGC5_PORTD_MASK | SIM_SCGC5_PORTE_MASK;
+
+  // Setup GPIO ports as outputs with drive strength enabled
+  GPIO_PDDR_REG(p_Motor0->settings.Pt) = 0x00;
+  GPIO_PDDR_REG(p_Motor1->settings.Pt) = 0x00;
+  for (i = 0; i < NUM_PINS; i++)
+  {
+    PORTE_PCR1 = 0;
+    // Motor 1
+    GPIO_PDDR_REG(p_Motor0->settings.Pt) |= (1 << p_Motor0->settings.Pin[i]);
+    PORT_PCR_REG(p_Motor0->settings.Port, p_Motor0->settings.Pin[i])= PORT_PCR_MUX(1) | PORT_PCR_DSE_MASK;
+    // Motor 2
+    GPIO_PDDR_REG(p_Motor1->settings.Pt) |= (1 << p_Motor1->settings.Pin[i]);
+    PORT_PCR_REG(p_Motor1->settings.Port, p_Motor1->settings.Pin[i])= PORT_PCR_MUX(1) | PORT_PCR_DSE_MASK;
+  }
+}
+
+/*
+ * Activate settings for both stepper motors
+ */
+void StepperSetSettings()
+{
   /* Reset both motor statuses */
   StepperReset(p_Motor0);
   StepperReset(p_Motor1);
-  
+
   /* Assign PINs for each coil, hardcoded to PORTC */
-  p_Motor0->settings.Port = PTC_BASE_PTR; // TODO: PORT as param
+  p_Motor0->settings.Pt = PTC_BASE_PTR; // TODO: PORT as param
+  p_Motor0->settings.Port = PORTC_BASE_PTR;
   p_Motor0->settings.Pin[0] = 12;
   p_Motor0->settings.Pin[1] = 13;
   p_Motor0->settings.Pin[2] = 16;
   p_Motor0->settings.Pin[3] = 17;
 
   /* Assign PINs for each coil, hardcoded to PORTE */
-  p_Motor0->settings.Port = PTE_BASE_PTR; // TODO: PORT as param
+  p_Motor0->settings.Pt = PTE_BASE_PTR; // TODO: PORT as param
+  p_Motor0->settings.Port = PORTE_BASE_PTR;
   p_Motor0->settings.Pin[0] = 23;
   p_Motor0->settings.Pin[1] = 22;
   p_Motor0->settings.Pin[2] = 21;
@@ -88,16 +118,16 @@ void StepperReset(StepperMotor* mot)
  */
 void StepperUpdate(StepperMotor* mot)
 {
-  if(mot->status.enabled)
+  if (mot->status.enabled)
   {
     // State change CW
-    if(mot->status.desired_position > mot->status.current_position)
+    if (mot->status.desired_position > mot->status.current_position)
       mot->status.current_position++;
     // State changed CCW
-    else if(mot->status.desired_position < mot->status.current_position)
+    else if (mot->status.desired_position < mot->status.current_position)
       mot->status.current_position--;
-    
-    StepperActiveCoil(mot, mot->status.current_position%4);
+
+    StepperActivateCoil(mot, mot->status.current_position % NUM_PINS);
   }
 }
 
@@ -107,5 +137,5 @@ void StepperUpdate(StepperMotor* mot)
  */
 void StepperActivateCoil(StepperMotor* mot, uint8 coil)
 {
-  GPIO_PSOR_REG(mot->settings.Port) = (1 << mot->settings.Pin[coil]);
+  GPIO_PSOR_REG(mot->settings.Pt) = (1 << mot->settings.Pin[coil]);
 }
