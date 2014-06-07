@@ -7,6 +7,7 @@
 #include "Stepper.h"
 #include "PIT.h"
 
-void Initialize();
+void ConfigInitialize();
+void ConfigStart();
 
 #endif /* CONFIG_H_ */

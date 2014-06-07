@@ -3,11 +3,16 @@
 /*
  * Initialize clock, system, GPIO
  */
-void Initialize()
+void ConfigInitialize()
 {
   ClockInit();
   SysTickInit();
   UART_init();
   StepperInit();
-  //PIT_init(100);
+  PIT_init();
+}
+
+void ConfigStart()
+{
+  PIT_enable();
 }

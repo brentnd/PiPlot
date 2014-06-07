@@ -1,11 +1,9 @@
 #include "Config.h"
 
-void PIT_init(int TimeIn_mS)
+void PIT_init()
 {
   //Enable clock to the PIT
   SIM_SCGC6 |= SIM_SCGC6_PIT_MASK;
-
-  PIT_LDVAL0 = (uint32_t)(TimeIn_mS / 1000.0) * (float) (PERIPHERAL_BUS_CLOCK);
 
   //enable PIT0 and its interrupt
   PIT_TCTRL0 = PIT_TCTRL_TEN_MASK | PIT_TCTRL_TIE_MASK;
@@ -15,8 +13,22 @@ void PIT_init(int TimeIn_mS)
 
   //Enable the PIT module
   PIT_MCR &= ~PIT_MCR_MDIS_MASK;
+}
 
+/*
+ * Enable the Interrupt for the PIT
+ */
+void PIT_enable()
+{
   enable_irq(INT_PIT - 16);
+}
+
+/*
+ * Disable the interrupt for the PIT
+ */
+void PIT_disable()
+{
+  disable_irq(INT_PIT - 16);
 }
 
 void PIT_IRQ()

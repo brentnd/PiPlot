@@ -99,6 +99,16 @@ int32 StepperGetPosition(StepperMotor* mot)
 }
 
 /*
+ * Set the speed of the stepper motor
+ */
+void StepperSetSpeed(uint8 speed)
+{
+  p_Motor0->status.speed = speed;
+  p_Motor1->status.speed = speed;
+  PIT_LDVAL0 = (uint32_t)((1 / speed) * (float) (PERIPHERAL_BUS_CLOCK));
+}
+
+/*
  * Reset the stepper motor to 0 and stop
  */
 void StepperReset(StepperMotor* mot)

@@ -4,7 +4,8 @@
 #include "Config.h"
 
 void PIT_init();
-
+void PIT_enable();
+void PIT_disable();
 void PIT_IRQ();
 
 #endif /* PIT_H_ */
