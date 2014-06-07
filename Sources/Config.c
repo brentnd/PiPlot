@@ -9,5 +9,5 @@ void Initialize()
   SysTickInit();
   UART_init();
   StepperInit();
-  PIT_init();
+  //PIT_init(100);
 }
