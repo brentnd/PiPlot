@@ -92,6 +92,13 @@ void StepperSetPositionDelta(StepperMotor* mot, uint16_t delta)
   mot->status.desired_position += delta;
 }
 
+void StepperSetZero(StepperMotor* mot)
+{
+  mot->status.desired_position = HOME_POS;
+  mot->status.current_position = HOME_POS;
+}
+
+
 uint8_t StepperMoving()
 {
   return (p_Motor0->status.spinning || p_Motor1->status.spinning);
@@ -113,7 +120,7 @@ void StepperReset(StepperMotor* mot)
   /* Enable both stepper motors */
   mot->status.enabled = 0;
   mot->status.enabled = 0;
-  mot->status.current_position = 0;
+  mot->status.current_position = 1000;
   mot->status.desired_position = 0;
   mot->status.speed = 0;
   mot->status.spinning = 0;
