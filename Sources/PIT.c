@@ -4,6 +4,9 @@ void PIT_init()
 {
   //Enable clock to the PIT
   SIM_SCGC6 |= SIM_SCGC6_PIT_MASK;
+  
+  // Set Stepper Speed
+  PIT_setSpeed(200);
 
   //enable PIT0 and its interrupt
   PIT_TCTRL0 = PIT_TCTRL_TEN_MASK | PIT_TCTRL_TIE_MASK;
@@ -13,6 +16,11 @@ void PIT_init()
 
   //Enable the PIT module
   PIT_MCR &= ~PIT_MCR_MDIS_MASK;
+}
+
+void PIT_setSpeed(uint8_t speed)
+{
+  PIT_LDVAL0 = (uint32_t)((1.0 / speed) * (float) (PERIPHERAL_BUS_CLOCK));
 }
 
 /*

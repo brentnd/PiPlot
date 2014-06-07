@@ -40,9 +40,10 @@ StepperMotor* p_Motor1;
 
 /* Public stepper functions */
 void StepperInit();
-void StepperSetPosition(StepperMotor* mot, int new_position);
-void StepperSetPositionDelta(StepperMotor* mot, int delta);
-int StepperGetPosition(StepperMotor* mot);
+void StepperSetPosition(StepperMotor* mot, uint32_t new_position);
+void StepperSetPositionDelta(StepperMotor* mot, uint16_t delta);
+uint32_t StepperGetPosition(StepperMotor* mot);
+uint8_t StepperMoving();
 void StepperUpdate(StepperMotor* mot);
 
 #endif /* STEPPER_H_ */

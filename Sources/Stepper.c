@@ -74,8 +74,9 @@ void StepperSetSettings()
  *  @param *mot - pointer to motor structure
  *  @param new_position - absolute desired position
  */
-void StepperSetPosition(StepperMotor* mot, int new_position)
+void StepperSetPosition(StepperMotor* mot, uint32_t new_position)
 {
+  mot->status.spinning = 1;
   mot->status.desired_position = new_position;
 }
 
@@ -85,27 +86,23 @@ void StepperSetPosition(StepperMotor* mot, int new_position)
  *  @param delta - change in position, positive for Clock-wise,
  *                                     negative for Counter clock-wise
  */
-void StepperSetPositionDelta(StepperMotor* mot, int delta)
+void StepperSetPositionDelta(StepperMotor* mot, uint16_t delta)
 {
+  mot->status.spinning = 1;
   mot->status.desired_position += delta;
+}
+
+uint8_t StepperMoving()
+{
+  return (p_Motor0->status.spinning || p_Motor1->status.spinning);
 }
 
 /*
  * Get the position the stepper motor is currently at
  */
-int32 StepperGetPosition(StepperMotor* mot)
+uint32 StepperGetPosition(StepperMotor* mot)
 {
   return mot->status.current_position;
-}
-
-/*
- * Set the speed of the stepper motor
- */
-void StepperSetSpeed(uint8 speed)
-{
-  p_Motor0->status.speed = speed;
-  p_Motor1->status.speed = speed;
-  PIT_LDVAL0 = (uint32_t)((1 / speed) * (float) (PERIPHERAL_BUS_CLOCK));
 }
 
 /*
@@ -123,6 +120,9 @@ void StepperReset(StepperMotor* mot)
   /* Re-enable the motor */
   mot->status.enabled = 1;
   mot->status.enabled = 1;
+  
+  /* Set to default speed */
+  mot->status.speed = 10;
 }
 
 /*
@@ -140,8 +140,13 @@ void StepperUpdate(StepperMotor* mot)
     // State changed CCW
     else if (mot->status.desired_position < mot->status.current_position)
       mot->status.current_position--;
-
-    StepperActivateCoil(mot, mot->status.current_position % NUM_PINS);
+    else
+      mot->status.spinning = 0;
+    
+    if(mot->status.current_position > 0)
+      StepperActivateCoil(mot, mot->status.current_position % NUM_PINS);
+    else
+      StepperActivateCoil(mot, (-mot->status.current_position) % NUM_PINS);
   }
 }
 

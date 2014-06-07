@@ -4,6 +4,7 @@
 #include "Config.h"
 
 void PIT_init();
+void PIT_setSpeed(uint8_t speed);
 void PIT_enable();
 void PIT_disable();
 void PIT_IRQ();
