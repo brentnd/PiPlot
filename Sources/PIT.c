@@ -43,6 +43,8 @@ void PIT_IRQ()
 {
   // Turn off the Pit 0 Irq flag
   PIT_TFLG0 = PIT_TFLG_TIF_MASK;
+  
+  if(StepperMoving()) UART_putchar('.');
 
   // Update stepper motors
   StepperUpdate(p_Motor0);

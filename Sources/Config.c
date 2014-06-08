@@ -9,6 +9,7 @@ void ConfigInitialize()
   SysTickInit();
   UART_init();
   StepperInit();
+  MoveInit();
   PIT_init();
 }
 
