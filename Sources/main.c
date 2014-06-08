@@ -38,6 +38,10 @@ void terminal()
       PRINTLN("Zeroed at current position.");
       MoveSetZero();
       break;
+    case 'o':
+      PRINTLN("Draw a circle?");
+      DrawCircle(200);
+      break;
     }
   }
   

@@ -1,7 +1,8 @@
 #include "Config.h"
 
-#define LENGTH_PER_STEP   (2*3.14159265358979323846*MOTOR_RADIUS / 200)
-#define INTERP_STEP 10.0
+#define M_PI    3.14159265358979323846
+#define LENGTH_PER_STEP   (2*3.M_PI*MOTOR_RADIUS / 200)
+#define INTERP_STEP 5.0
 
 /* Local variables */
 int x_pos,y_pos;
@@ -46,6 +47,30 @@ void MoveToAbsolute(uint32_t x, uint32_t y)
     GotoXY(x_int, y_int);
   }
 }
+
+void DrawCircle(int radius)
+{
+  int x,y;
+  uint32_t r2 = radius * radius;
+  
+  uint32_t x_cen, y_cen;
+  x_cen = x_pos+radius;
+  y_cen = y_pos;
+  
+  // Bottom half
+  for(x=-radius; x<radius; x++)
+  {
+    y = (int) (sqrt(r2 - x*x) + 0.5);
+    GotoXY(x_cen + x, y_cen + y);
+  }
+  // Bottom half
+  for(x=-radius; x<radius; x++)
+  {
+    y = (int) (sqrt(r2 - x*x) + 0.5);
+    GotoXY(x_cen - x, y_cen - y);
+  }
+}
+
 void MoveToRelative(uint32_t x_delta, uint32_t y_delta)
 {
   MoveToAbsolute(x_pos+x_delta, y_pos+y_delta);

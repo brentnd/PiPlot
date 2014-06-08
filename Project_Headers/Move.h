@@ -19,4 +19,6 @@ void MoveY(int32_t delta);
 void MoveHome();
 void MoveSetZero();
 
+void DrawCircle(int radius);
+
 #endif /* COMPUTE_H_ */
