@@ -2,19 +2,8 @@
 
 #define MOVE_DIST 100
 
-/*
- * Future main method for Pythagorian Plotter
- */
-int main(void)
+void terminal()
 {
-  ConfigInitialize();
-  printf("Pythagorian Plotter v1.0\n\n");
-  printf("Initialized...\n");
-  ConfigStart();
-  printf("Started...\n");
-  MoveSetZero();
-  printf("Zeroed...\n");
-  
   char c = 48;
   for(;;)
   {
@@ -51,6 +40,24 @@ int main(void)
       break;
     }
   }
+  
+}
+
+/*
+ * Future main method for Pythagorian Plotter
+ */
+int main(void)
+{
+  ConfigInitialize();
+  printf("Pythagorian Plotter v1.0\n\n");
+  printf("Initialized...\n");
+  ConfigStart();
+  printf("Started...\n");
+  MoveSetZero();
+  printf("Zeroed...\n");
+  
+  // Start terminal loop
+  terminal();
   
   return 0;
 }
