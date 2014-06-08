@@ -3,11 +3,12 @@
 
 #include <math.h>
 
-#define CANVAS_WIDTH   4000 // MM
-#define CANVAS_HEIGHT  4000 // MM
-#define MOTOR_RADIUS   3 // MM
+#define CANVAS_WIDTH        400 // MM
+#define CANVAS_HEIGHT       400 // MM
 
-#define HOME_POS       (uint32_t)(0.7071*CANVAS_WIDTH)
+#define M_PI                3.14159265358979323846
+#define LENGTH_PER_STEP     (0.085) // MM per step
+#define INTERP_STEP         1.0
 
 /* Public prototypes */
 void MoveInit();

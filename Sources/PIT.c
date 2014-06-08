@@ -6,7 +6,7 @@ void PIT_init()
   SIM_SCGC6 |= SIM_SCGC6_PIT_MASK;
   
   // Set Stepper Speed
-  PIT_setSpeed(100);
+  PIT_setSpeed(200);
 
   //enable PIT0 and its interrupt
   PIT_TCTRL0 = PIT_TCTRL_TEN_MASK | PIT_TCTRL_TIE_MASK;
@@ -43,8 +43,6 @@ void PIT_IRQ()
 {
   // Turn off the Pit 0 Irq flag
   PIT_TFLG0 = PIT_TFLG_TIF_MASK;
-  
-  if(StepperMoving()) UART_putchar('.');
 
   // Update stepper motors
   StepperUpdate(p_Motor0);

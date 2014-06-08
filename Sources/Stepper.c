@@ -1,5 +1,7 @@
 #include "Config.h"
 
+#define HOME_POS            (uint32_t)((0.7071*CANVAS_WIDTH) / LENGTH_PER_STEP)
+
 /*
  * Internal function prototypes
  */
@@ -120,8 +122,8 @@ void StepperReset(StepperMotor* mot)
   /* Enable both stepper motors */
   mot->status.enabled = 0;
   mot->status.enabled = 0;
-  mot->status.current_position = 1000;
-  mot->status.desired_position = 0;
+  mot->status.current_position = HOME_POS;
+  mot->status.desired_position = HOME_POS;
   mot->status.speed = 0;
   mot->status.spinning = 0;
   /* Re-enable the motor */
