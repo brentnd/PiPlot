@@ -5,38 +5,62 @@
 #define MOVE_DIST 10
 #define BUF_SIZE  50
 
+#define MIN_BOUND     40
+#define MAX_BOUND     360
+
 #define CR  13
 #define BS  8
+
+#define GCODE_STATUS  uint8
+#define GCODE_OK      0
+#define GCODE_ERROR   1
+#define GCODE_DONE    2
+#define GCODE_PAUSE   3
 
 char* buffer;
 char* p_buffer;
 
-void ProcessCommand()
+
+GCODE_STATUS ProcessCommand()
 {
   uint32_t x[2];
   char *split;
   int i = 0;
+  // Redirect pointer to beginning
   p_buffer = &buffer[0];
-  split = strtok(p_buffer," ,");
+  
+  // Terminate
+  if(strcmp( p_buffer, "end" ))
+  {
+    PRINTLN("EXIT G-code mode");
+    return GCODE_DONE;
+  }
+  // Paused
+  else if(strcmp( p_buffer, "pause") )
+  {
+    PRINTLN("G-code PAUSE");
+    return GCODE_PAUSE;
+  }
+  
+  // Else parse goto command
+  split = strtok(p_buffer,"g ,");
   while( (split != NULL) & (i<2) )
   {
     x[i++] = atoi(split);
-    split = strtok( NULL, " ,");
+    split = strtok( NULL, "g ,");
   }
-  if(x[0] == 0 & x[1] == 0)
-  {
-    PRINTLN("Exit G-code Mode");
-    return;
-  }
-  if(((x[0]+x[1]) < 100) | ((x[0]+x[1]) > 800))
+  // Check bounds
+  if((x[0] < MIN_BOUND) | (x[0] > MAX_BOUND) | (x[1] < MIN_BOUND) | (x[1] > MAX_BOUND))
   {
     PRINTLN("Bad coordinates");
+    return GCODE_ERROR;
   }
   else
   {
     printf("Going to: (%d, %d)\n\r",x[0],x[1]);
     MoveToAbsolute(x[0],x[1]);
     PRINTLN("Done");
+    return GCODE_OK;
   }
 }
 
@@ -55,8 +79,11 @@ void PGcode()
     /* Check for end of command */
     if((*p_buffer) == CR)
     {
+      GCODE_STATUS st;
       LINEFEED;
-      ProcessCommand();
+      st = ProcessCommand();
+      if(st == GCODE_DONE)
+        break;
       p_buffer = &buffer[0]-(sizeof(char));
     }
     

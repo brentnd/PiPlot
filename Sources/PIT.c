@@ -6,7 +6,7 @@ void PIT_init()
   SIM_SCGC6 |= SIM_SCGC6_PIT_MASK;
   
   // Set Stepper Speed
-  PIT_setSpeed(200);
+  PIT_setSpeed(150);
 
   //enable PIT0 and its interrupt
   PIT_TCTRL0 = PIT_TCTRL_TEN_MASK | PIT_TCTRL_TIE_MASK;
