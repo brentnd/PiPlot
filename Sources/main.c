@@ -30,13 +30,13 @@ GCODE_STATUS ProcessCommand()
   p_buffer = &buffer[0];
   
   // Terminate
-  if(strcmp( p_buffer, "end" ))
+  if(strcmp( p_buffer, "end\r" ) == 0)
   {
     PRINTLN("EXIT G-code mode");
     return GCODE_DONE;
   }
   // Paused
-  else if(strcmp( p_buffer, "pause") )
+  else if(strcmp( p_buffer, "pause\r") == 0 )
   {
     PRINTLN("G-code PAUSE");
     return GCODE_PAUSE;
