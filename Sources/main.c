@@ -166,6 +166,9 @@ int main(void)
   printf("Started...\n");
   MoveSetZero();
   printf("Zeroed...\n");
+
+  // Set Stepper Speed
+  PIT_setSpeed(200);
   
   // Start terminal loop
   terminal();
