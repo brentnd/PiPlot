@@ -11,6 +11,7 @@ void ConfigInitialize()
   StepperInit();
   MoveInit();
   PIT_init();
+  PWM_init();
 }
 
 void ConfigStart()

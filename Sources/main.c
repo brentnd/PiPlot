@@ -11,6 +11,7 @@
 #define CR  13
 #define BS  8
 
+//TODO: move to Gcode module
 #define GCODE_STATUS  uint8
 #define GCODE_OK      0
 #define GCODE_ERROR   1
@@ -20,7 +21,9 @@
 char* buffer;
 char* p_buffer;
 
-
+/*
+ * Parse and execute Gcode command
+ */
 GCODE_STATUS ProcessCommand()
 {
   uint32_t x[2];
@@ -100,6 +103,11 @@ void PGcode()
   }
 }
 
+int penp = 100;
+
+/*
+ * Terminal loop application.
+ */
 void terminal()
 {
   char c = 48;
@@ -144,6 +152,11 @@ void terminal()
       PRINTLN("Draw a circle?");
       DrawCircle(50);
       break;
+    case ' ':
+      PRINTLN("Pen action");
+      penp = 100 - penp;
+      PWM_setPosition(penp);
+      break;
     }
   }
   
@@ -160,7 +173,7 @@ int main(void)
   p_buffer = &buffer[0];
   
   ConfigInitialize();
-  printf("Pythagorian Plotter v1.0\n\n");
+  printf("Pythagorian Plotter v2.0\n\n");
   printf("Initialized...\n");
   ConfigStart();
   printf("Started...\n");

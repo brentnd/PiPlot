@@ -13,8 +13,9 @@
 #define PWM_DUTY_RANGE		(PWM_DUTY_RIGHT-PWM_DUTY_LEFT)
 #define PWM_DUTY_CENTER		((PWM_DUTY_RANGE)/2)+PWM_DUTY_LEFT
 
-void InitPWM();
-void SetPWM(int Position);
-void SetPWMDutyCycle(float DutyCycle);
+void PWM_init();
+void PWM_setPosition(int Position);
+void PWM_setDuty(float DutyCycle);
+void PWM_IRQHandler();
 
 #endif /* PWM_H_ */

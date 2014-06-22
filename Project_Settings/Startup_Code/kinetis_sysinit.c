@@ -123,7 +123,7 @@ void (* const InterruptVector[])() __attribute__ ((section(".vectortable"))) = {
     ADC0_IRQHandler, /* ADC0 interrupt */
     CMP0_IRQHandler, /* CMP0 interrupt */
     FTM0_IRQHandler, /* FTM0 fault, overflow and channels interrupt */
-    Servo_IRQHandler, /* FTM1 fault, overflow and channels interrupt */
+    PWM_IRQHandler, /* FTM1 fault, overflow and channels interrupt */
     FTM2_IRQHandler, /* FTM2 fault, overflow and channels interrupt */
     RTC_Alarm_IRQHandler, /* RTC Alarm interrupt */
     RTC_Seconds_IRQHandler, /* RTC Seconds interrupt */
