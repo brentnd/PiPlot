@@ -7,7 +7,6 @@
 #include "UART.h"
 #include "Stepper.h"
 #include "PIT.h"
-#include "PWM.h"
 
 void ConfigInitialize();
 void ConfigStart();
