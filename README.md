@@ -9,12 +9,7 @@ Custom driver firmware and plotting calculations are made to allow for X, Y sett
 
 ## Drawings
 
-#### Fighter Pilot
-![Fighter Pilot](/output/pilot.jpg?raw=true "Fighter Pilot" =450x)
-#### Library
-![Library](/output/library.jpg?raw=true "Library" =450x)
-#### Jeep
-![Jeep](/output/jeep.jpg?raw=true "Jeep" =450x)
+![Fighter Pilot](/output/pilot.jpg?raw=true "Fighter Pilot" =300x) ![Library](/output/library.jpg?raw=true "Library" =300x) ![Jeep](/output/jeep.jpg?raw=true "Jeep" =300x)
 
 ======
 
